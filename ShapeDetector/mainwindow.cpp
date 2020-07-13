@@ -90,6 +90,7 @@ void MainWindow::on_btnOpenVideoFile_clicked()
         ui->rbVideoFile->setChecked(true);
         ui->rbVideoFile->setStyleSheet("color:red");
         ui->rbVideoCam->setStyleSheet("color:black");
+        ui->btnPlay->setText("Stop");
         source = VIDEOFILE;
         vcVideo >> matTestFrame;
         ui->lblVideoFileDimension->setText(QString::number(matTestFrame.cols) + " x " + QString::number(matTestFrame.rows));
@@ -154,7 +155,7 @@ void MainWindow::on_btnPlay_clicked()
             } else {
                 ui->rbVideoFile->setStyleSheet("color: red");
                 ui->rbVideoCam->setStyleSheet("color: black");
-                ui->btnPlay->setText("Close");
+                ui->btnPlay->setText("Stop");
             }
         }
     } else {
