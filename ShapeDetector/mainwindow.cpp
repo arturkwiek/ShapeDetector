@@ -163,3 +163,26 @@ void MainWindow::on_btnPlay_clicked()
         vcVideo.release();
     }
 }
+
+
+void MainWindow::on_hs1_valueChanged(int value)
+{
+    ui->lbl1->setText(QString::number(value));
+}
+
+void MainWindow::on_hs2_valueChanged(int value)
+{
+
+    ui->lbl2->setText(QString::number(value));
+}
+
+void MainWindow::on_hs3_valueChanged(int value)
+{
+
+    ui->lbl3->setText(QString::number(value));
+}
+
+void MainWindow::on_hs4_valueChanged(int value)
+{
+    ui->lbl4->setText(QString::number(value));
+}

@@ -8,3 +8,9 @@
 /ShapeDetector/ShapeDetector.pro.user
 /build-ShapeDetector-Desktop_Qt_5_14_1_MinGW_32_bit-Debug/main.o
 /build-ShapeDetector-Desktop_Qt_5_14_1_MinGW_32_bit-Debug/ShapeDetector.exe
+/ShapeDetector/release/main.o
+/ShapeDetector/release/mainwindow.o
+/ShapeDetector/release/moc_mainwindow.cpp
+/ShapeDetector/release/moc_mainwindow.o
+/ShapeDetector/release/moc_predefs.h
+/ShapeDetector/release/ShapeDetector.exe

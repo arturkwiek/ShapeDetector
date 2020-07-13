@@ -64,5 +64,9 @@ public slots:
     void on_btnPlay_clicked();
 
 private slots:
+    void on_hs1_valueChanged(int value);
+    void on_hs2_valueChanged(int value);
+    void on_hs3_valueChanged(int value);
+    void on_hs4_valueChanged(int value);
 };
 #endif // MAINWINDOW_H
