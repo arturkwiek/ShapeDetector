@@ -17,25 +17,36 @@
 #include <opencv2/videoio.hpp>
 #include <opencv2/videostab.hpp>
 
+#define max(x,y) x>y? x:y
+
 using namespace std;
 using namespace cv;
 
+
+//int max(int x,int y) {return x>y? x:y;}
+
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+    : QMainWindow(parent),
+      iThreasholdMin(50),
+    iThreasholdMax(150),
+    iDP(2),
+    iMinDist(100),
+    iParam1(30),
+    iParam2(150),
+    iMinRadius(100),
+    iMaxRadius(140),
+    ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+   setWindowTitle(QString("Zajebisty program! -> release: ") + QString(__DATE__)+ " at " +QString(__TIME__) );
 
-    ui->gvFrame->setStyleSheet("background-color: rgb(0, 0, 0);");
-    ui->gvFrame->setScene(new QGraphicsScene(this));
-    ui->gvFrame->scene()->addItem(&pixmapItem);
+   ui->gvFrame->setStyleSheet("background-color: rgb(0, 0, 0);");
+   ui->gvFrame->setScene(new QGraphicsScene(this));
+   ui->gvFrame->scene()->addItem(&pixmapItem);
+   ui->gvBWFrame->setStyleSheet("background-color: rgb(0, 0, 0);");
+   ui->gvBWFrame->setScene(new QGraphicsScene(this));
+   ui->gvBWFrame->scene()->addItem(&pixmapItemBW);
 
-    //    faceDetector = ObjectDetector("haarcascade_frontalface_alt2.xml");
-    //    faceDetector.setName("morda");
-    //    eyeDetector = ObjectDetector("haarcascade_eye_tree_eyeglasses.xml");
-    //    eyeDetector.setName("oczko");
-    //    eyeDetector = ObjectDetector("haarcascade_eye_tree_eyeglasses.xml");
-    //    eyeDetector.setName("samolocik");
 }
 
 MainWindow::~MainWindow()
@@ -57,6 +68,25 @@ void MainWindow::setVideoFrame(/*Mat*  video_frame*/)
         ui->gvFrame->resetMatrix();
         pixmapItem.setPixmap(QPixmap::fromImage(qimg.rgbSwapped()));
         ui->gvFrame->fitInView(&pixmapItem, Qt::KeepAspectRatio);
+    } else {
+        qDebug() << "Frame is empty";
+    }
+}
+
+void MainWindow::setBWFrame(Mat & video_frame)
+{
+    Mat frame = video_frame;
+
+    if(!frame.empty())
+    {
+        QImage qimg(frame.data,
+                    frame.cols,
+                    frame.rows,
+                    frame.step,
+                    QImage::Format_RGB888);
+        ui->gvBWFrame->resetMatrix();
+        pixmapItemBW.setPixmap(QPixmap::fromImage(qimg.rgbSwapped()));
+        ui->gvBWFrame->fitInView(&pixmapItemBW, Qt::KeepAspectRatio);
     } else {
         qDebug() << "Frame is empty";
     }
@@ -91,8 +121,12 @@ void MainWindow::on_btnOpenVideoFile_clicked()
         ui->rbVideoFile->setStyleSheet("color:red");
         ui->rbVideoCam->setStyleSheet("color:black");
         ui->btnPlay->setText("Stop");
-        source = VIDEOFILE;
+        m_source = VIDEOFILE;
         vcVideo >> matTestFrame;
+        ui->hsParam1->setMaximum(max((int)matTestFrame.cols,(int)matTestFrame.rows));
+        ui->hsParam2->setMaximum(max((int)matTestFrame.cols,(int)matTestFrame.rows));
+        ui->hsMaxRadius->setMaximum(max((int)matTestFrame.cols,(int)matTestFrame.rows));
+        ui->hsMinRadius->setMaximum(max((int)matTestFrame.cols,(int)matTestFrame.rows));
         ui->lblVideoFileDimension->setText(QString::number(matTestFrame.cols) + " x " + QString::number(matTestFrame.rows));
         ui->gvFrame->resetMatrix();
     } else {
@@ -165,24 +199,55 @@ void MainWindow::on_btnPlay_clicked()
 }
 
 
-void MainWindow::on_hs1_valueChanged(int value)
+void MainWindow::on_hsDP_valueChanged(int value)
 {
-    ui->lbl1->setText(QString::number(value));
+    iDP = value;
+    ui->lblDP->setText(QString::number(value));
 }
 
-void MainWindow::on_hs2_valueChanged(int value)
+void MainWindow::on_hsMinDist_valueChanged(int value)
 {
-
-    ui->lbl2->setText(QString::number(value));
+    iMinDist = value;
+    ui->lblMinDist->setText(QString::number(value));
 }
 
-void MainWindow::on_hs3_valueChanged(int value)
+void MainWindow::on_hsParam1_valueChanged(int value)
 {
-
-    ui->lbl3->setText(QString::number(value));
+    iParam1 = value;
+    ui->lblParam1->setText(QString::number(value));
 }
 
-void MainWindow::on_hs4_valueChanged(int value)
+void MainWindow::on_hsParam2_valueChanged(int value)
 {
-    ui->lbl4->setText(QString::number(value));
+    iParam2 = value;
+    ui->lblParam2->setText(QString::number(value));
+}
+
+void MainWindow::on_hsThreasholdMin_valueChanged(int value)
+{
+    iThreasholdMin = value;
+    ui->lblThreasholdMin->setText(QString::number(value));
+}
+
+void MainWindow::on_hsThreasholdMax_valueChanged(int value)
+{
+    iThreasholdMax = value;
+    ui->lblThreasholdMax->setText(QString::number(value));
+}
+
+void MainWindow::on_hsMinRadius_valueChanged(int value)
+{
+    iMinRadius = value;
+    ui->lblMinRadius->setText(QString::number(value));
+}
+
+void MainWindow::on_hsMaxRadius_valueChanged(int value)
+{
+    iMaxRadius = value;
+    ui->lblMaxRadius->setText(QString::number(value));
+}
+
+void MainWindow::on_cbxCamId_activated(const QString &arg1)
+{
+    iCamId = ui->cbxCamId->currentText().toInt();
 }
