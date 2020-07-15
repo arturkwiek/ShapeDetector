@@ -35,6 +35,10 @@ MainWindow::MainWindow(QWidget *parent)
     iParam2(150),
     iMinRadius(100),
     iMaxRadius(140),
+    bPlay(false),
+                    bCanny(false),
+                    bBlur(false),
+                    bThreashold(false),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
@@ -250,4 +254,20 @@ void MainWindow::on_hsMaxRadius_valueChanged(int value)
 void MainWindow::on_cbxCamId_activated(const QString &arg1)
 {
     iCamId = ui->cbxCamId->currentText().toInt();
+}
+
+void MainWindow::on_chbThreashold_clicked(bool checked)
+{
+    bThreashold = checked;
+}
+
+void MainWindow::on_chbCanny_clicked(bool checked)
+{
+    bCanny = checked;
+}
+
+
+void MainWindow::on_checkBox_2_clicked(bool checked)
+{
+    bBlur = checked;
 }

@@ -60,8 +60,11 @@ int main(int argc, char *argv[])
             img_hough = w.matVideoFrame.clone();
 
             Mat binary_edges;
-            Canny(w.matVideoFrame, binary_edges, w.getThreasholdMin(), w.getThreasholdMax());
-            blur(binary_edges,binary_edges,Size(1,1),Point(-1,-1),BORDER_DEFAULT);
+            if(true == w.bCanny)
+                Canny(w.matVideoFrame, binary_edges, w.getThreasholdMin(), w.getThreasholdMax());// bCanny
+            if(true == w.bBlur)
+                blur(binary_edges,binary_edges,Size(1,1),Point(-1,-1),BORDER_DEFAULT); // bBlur
+
 //            Smooth(binary_edges, binary_edges, CV_GAUSSIAN, 7, 7);
 //            imshow("binary_edges",binary_edges);
             /* ---------------------------------- Lines detection */

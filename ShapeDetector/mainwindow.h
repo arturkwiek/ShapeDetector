@@ -46,7 +46,10 @@ public:
     ~MainWindow();
 
     VideoCapture vcVideo;
-    bool bPlay;
+    bool bPlay,
+    bCanny,
+    bBlur,
+    bThreashold;
     Mat matVideoFrame;
 
     void grabFrame() {vcVideo >> matVideoFrame;}
@@ -108,5 +111,8 @@ private slots:
     void on_hsMinRadius_valueChanged(int value);
     void on_hsMaxRadius_valueChanged(int value);
     void on_cbxCamId_activated(const QString &arg1);
+    void on_chbThreashold_clicked(bool checked);
+    void on_chbCanny_clicked(bool checked);
+    void on_checkBox_2_clicked(bool checked);
 };
 #endif // MAINWINDOW_H
